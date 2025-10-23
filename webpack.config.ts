@@ -3,9 +3,13 @@
 import * as path from 'path';
 import { Configuration as WebpackConfiguration } from 'webpack';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+
 import { ConsoleRemotePlugin } from '@openshift-console/dynamic-plugin-sdk-webpack';
 
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import extensions from './plugin-extensions';
+import pluginMetadata from './plugin-metadata';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -30,7 +34,7 @@ const config: Configuration = {
     rules: [
       {
         test: /\.(jsx?|tsx?)$/,
-        exclude: /\/node_modules\//,
+        exclude: /node_modules\/(?!(@kubevirt-ui)\/kubevirt-api).*/,
         use: [
           {
             loader: 'ts-loader',
@@ -61,7 +65,7 @@ const config: Configuration = {
   },
   devServer: {
     static: './dist',
-    port: 9001,
+    port: 9002,
     // Allow Bridge running in a container to connect to the plugin dev server.
     allowedHosts: 'all',
     headers: {
@@ -74,7 +78,10 @@ const config: Configuration = {
     },
   },
   plugins: [
-    new ConsoleRemotePlugin(),
+    new ConsoleRemotePlugin({
+      extensions,
+      pluginMetadata,
+    }),
     new CopyWebpackPlugin({
       patterns: [{ from: path.resolve(__dirname, 'locales'), to: 'locales' }],
     }),

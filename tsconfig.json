@@ -1,14 +1,20 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "es2020",
+    "target": "es2021",
     "sourceMap": true,
     "jsx": "react",
     "allowJs": true,
     "strict": false,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types", "@types"]
   },
   "include": ["src"],
   "exclude": ["node_modules"],
