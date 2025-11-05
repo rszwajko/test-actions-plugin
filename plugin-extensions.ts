@@ -6,6 +6,7 @@ import type {
 import {
   ActionGroup,
   ActionProvider,
+  HorizontalNavTab,
   ResourceActionProvider,
 } from '@openshift-console/dynamic-plugin-sdk';
 
@@ -13,6 +14,7 @@ export const exposedModules: ConsolePluginBuildMetadata['exposedModules'] = {
   useVmActions: './useVmActions',
   useVmiActions: './useVmiActions',
   useVmActionsForResourceProvider: './useVmActionsForResourceProvider',
+  TestTab: './TestTab.tsx',
 };
 
 const extensions: EncodedExtension[] = [
@@ -62,6 +64,24 @@ const extensions: EncodedExtension[] = [
       },
     },
   } as EncodedExtension<ActionProvider>,
+  {
+    type: 'console.tab/horizontalNav',
+    properties: {
+      model: {
+        version: 'v1',
+        group: 'kubevirt.io',
+        kind: 'VirtualMachine',
+      },
+      page: {
+        name: 'Test',
+        href: 'test',
+      },
+      component: { $codeRef: 'TestTab' },
+    },
+    flags: {
+      disallowed: ['KUBEVIRT_UI_OBJECTS_UNDER_CONSTRUCTION'],
+    },
+  } as EncodedExtension<HorizontalNavTab>,
 ];
 
 export default extensions;
